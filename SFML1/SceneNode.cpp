@@ -10,7 +10,7 @@ SceneNode::SceneNode()
 void SceneNode::attachChild(PtrSceneNode child)
 {
 	child->mParent = this;
-	mChildren.push_back(std::move(child));//TODO peut on copier un unique pointer ?
+	mChildren.push_back(std::move(child));
 }
 
 SceneNode::PtrSceneNode SceneNode::detachChild(const SceneNode & node)

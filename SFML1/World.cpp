@@ -1,6 +1,5 @@
 #include "World.h"
 
-
 World::World(sf::RenderWindow &window)
 	: mWindow(window)
 	, mWorldView(window.getDefaultView())

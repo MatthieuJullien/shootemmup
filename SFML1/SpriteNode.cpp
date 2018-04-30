@@ -8,7 +8,7 @@ SpriteNode::SpriteNode(const sf::Texture & texture, const sf::IntRect & textureR
 	: mSprite(texture, textureRect)
 {}
 
-void SpriteNode::drawCurrrent(sf::RenderTarget & target, sf::RenderStates states) const
+void SpriteNode::drawCurrent(sf::RenderTarget & target, sf::RenderStates states) const
 {
 	target.draw(mSprite, states);
 }

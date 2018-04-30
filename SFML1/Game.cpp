@@ -11,7 +11,13 @@ Game::Game()
 	, mStatisticsText()
 	, mStatisticsUpdateTime()
 	, mStatisticsNumFrames(0)
-{}
+{
+	//TODO utiliser RessourceHolder
+	mFont.loadFromFile("Sansation.ttf");
+	mStatisticsText.setFont(mFont);
+	mStatisticsText.setPosition(5.f, 5.f);
+	mStatisticsText.setCharacterSize(10);
+}
 
 void Game::run()
 {
@@ -73,7 +79,7 @@ void Game::render()
 	mWindow.setView(mWindow.getDefaultView());
 	mWindow.draw(mStatisticsText);
 
-	//std::cout << mStatisticsText.getString().toAnsiString() << std::endl;
+	
 	mWindow.display();
 }
 
