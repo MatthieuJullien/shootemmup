@@ -5,6 +5,7 @@
 #include <map>
 #include <string>
 #include <algorithm>
+#include <iostream>
 
 
 struct AircraftMover
@@ -29,6 +30,7 @@ Player::Player()
 	mKeyBinding[sf::Keyboard::Right] = MoveRight;
 	mKeyBinding[sf::Keyboard::Up] = MoveUp;
 	mKeyBinding[sf::Keyboard::Down] = MoveDown;
+	mKeyBinding[sf::Keyboard::P] = Output;
 
 	// Set initial action bindings
 	initializeActions();
@@ -94,6 +96,8 @@ void Player::initializeActions()
 	mActionBinding[MoveRight].action = derivedAction<Aircraft>(AircraftMover(+playerSpeed, 0.f));
 	mActionBinding[MoveUp].action = derivedAction<Aircraft>(AircraftMover(0.f, -playerSpeed));
 	mActionBinding[MoveDown].action = derivedAction<Aircraft>(AircraftMover(0.f, +playerSpeed));
+	mActionBinding[Output].action = derivedAction<Aircraft>([](Aircraft& aircraft, sf::Time) {std::cout << aircraft.getPosition().x << ","
+		<< aircraft.getPosition().y << "\n"; });
 }
 
 bool Player::isRealtimeAction(Action action)
