@@ -5,13 +5,9 @@
 #include "SceneNode.h"
 #include "SpriteNode.h"
 #include "Aircraft.h"
+#include "CommandQueue.h"
+#include "Command.h"
 
-
-// Forward declaration
-//namespace sf
-//{
-//	class RenderWindow;
-//}
 
 class World : private sf::NonCopyable
 {
@@ -19,12 +15,14 @@ public:
 	explicit							World(sf::RenderWindow& window);
 	void								update(sf::Time dt);
 	void								draw();
+	CommandQueue&						getCommandQueue();
 
 
 private:
 	void								loadTextures();
 	void								buildScene();
-
+	void								adaptPlayerPosition();
+	void								adaptPlayerVelocity();
 
 private:
 	enum Layer
@@ -42,6 +40,7 @@ private:
 
 	SceneNode							mSceneGraph;
 	std::array<SceneNode*, Layer::LayerCount>	mSceneLayers;
+	CommandQueue						mCommandQueue;
 
 	sf::FloatRect						mWorldBounds;
 	sf::Vector2f						mSpawnPosition;

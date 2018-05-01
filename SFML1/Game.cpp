@@ -1,18 +1,18 @@
 #include "Game.h"
-#include <iostream>
-#include <string>
+
 
 const sf::Time Game::TimePerFrame = sf::seconds(1.f / 60.f);
 
 Game::Game() 
 	: mWindow(sf::VideoMode(640, 480), "Shoot'em up !")
 	, mWorld(mWindow)
+	, mIsPaused(false)
 	, mFont()
 	, mStatisticsText()
 	, mStatisticsUpdateTime()
 	, mStatisticsNumFrames(0)
 {
-	//TODO utiliser RessourceHolder
+
 	mFont.loadFromFile("Sansation.ttf");
 	mStatisticsText.setFont(mFont);
 	mStatisticsText.setPosition(5.f, 5.f);
@@ -31,32 +31,31 @@ void Game::run()
 		{
 			timeSinceLastUpdate -= TimePerFrame;
 
-			processEvents();
-			update(TimePerFrame);
+			processInput();
+			if (!mIsPaused)
+			{
+				update(TimePerFrame);
+			}
 		}
 		updateStatistics(elapsedTime);
 		render();
 	}
 }
 
-void Game::processEvents()
+void Game::processInput()
 {
+	CommandQueue& commands = mWorld.getCommandQueue();
+
 	sf::Event event;
 	while (mWindow.pollEvent(event))
 	{
-		switch (event.type)
-		{
-		case sf::Event::KeyPressed:
-			handlePlayerInput(event.key.code, true);
-			break;
-		case sf::Event::KeyReleased:
-			handlePlayerInput(event.key.code, false);
-			break;
-		case sf::Event::Closed:
+		mPlayer.handleEvent(event, commands);
+
+		if (event.type == sf::Event::Closed)
 			mWindow.close();
-			break;
-		}
 	}
+
+	mPlayer.handleRealtimeInput(commands);
 }
 
 void Game::update(sf::Time dt)
@@ -68,17 +67,9 @@ void Game::render()
 {
 	mWindow.clear();
 
-	sf::Text text;
-	text.setString("Hello world");
-	text.setCharacterSize(24);
-	text.setFillColor(sf::Color::Red);
-	mWindow.draw(text);
-
 	mWorld.draw();
-
 	mWindow.setView(mWindow.getDefaultView());
 	mWindow.draw(mStatisticsText);
-
 	
 	mWindow.display();
 }
@@ -99,10 +90,3 @@ void Game::updateStatistics(sf::Time elapsedTime)
 	}
 }
 
-
-void Game::handlePlayerInput(sf::Keyboard::Key key, bool isPressed)
-{
-	//  Echap
-	if (key == sf::Keyboard::Escape)
-		mWindow.close();
-}

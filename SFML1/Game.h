@@ -1,6 +1,8 @@
 #pragma once
 #include <SFML\Graphics.hpp>
+#include <SFML\System.hpp>
 #include "World.h"
+#include "Player.h"
 
 class Game
 {
@@ -9,16 +11,17 @@ public:
 	void run();
 
 private:
-	void processEvents();
+	void processInput();
 	void update(sf::Time elapsedTime);
 	void render();
 
 	void updateStatistics(sf::Time elapsedTime);
-	void handlePlayerInput(sf::Keyboard::Key key, bool isPressed);
 
 
 	sf::RenderWindow mWindow;
 	World mWorld;
+	bool mIsPaused;
+	Player mPlayer;
 
 	sf::Font mFont;
 	sf::Text mStatisticsText;
